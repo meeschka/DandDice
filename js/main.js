@@ -32,6 +32,9 @@ let gameState = {
 
 //Element Selectors
 const $flowBtn = $('#flow-btn');
+const $crowbarBtn = $('#crowbar-btn');
+const $rollBtn = $('#roll-btn');
+
 const $wagerInput = $('.wager');
 const $wager = $('#current-wager');
 
@@ -40,6 +43,8 @@ $(function(){
     $flowBtn.on('click', function(){
         gameState.gameOn ? initGame() : startGame();
     });
+    $rollBtn.on('click', playerRolls);
+
 
     function initGame(){
         gameState = {
@@ -51,8 +56,11 @@ $(function(){
             wager: 0,
             houseRoll: null,
             playerRoll: null,
-            gameOn: false
+            gameOn: false,
+            rolledDoubles: false
         }
+        $rollBtn.css('display', 'none');
+        $crowbarBtn.css('display', 'none');
         $flowBtn.html('Start Game');
         $wagerInput.css('display', '');
         $wager.html('');
@@ -69,31 +77,62 @@ $(function(){
     function startRound(){
         //rolls house dice
         gameState.houseRoll = rollDice(rules.vaults[gameState.level-1]['vault-die']);
+        //if house rolls a 1, player loses automatically
         if (gameState.houseRoll === 1) {
             gameState.Winner= 'The House';
             return;
         }
+        console.log(gameState.houseRoll);
+        //update message showing the house roll
+        playerSetup();
 
-        
-        //wager is updated with value in the wager box
-        //house rolls dice based on the value given in rules.vaults[gameState.level-1].['vault-die'];
-        //updates message based on roll
-            //if 1, mimic, player loses immediately
     }
     function playerSetup(){
-        //sets up dice to be rolled based on rules.vaults[gameState.level-1].['player-die'];
-        //adds button to screen for player to roll dice
+        //display 'roll' button for player
+        $rollBtn.css('display', '');
+        if (gameState.level === 4) {
+            //add button for crowbar option, which calls crowBarOption() when clicked
+            $crowbarBtn.css('display', '');
+        }
     }
     function rollDice(diceArr){
         let rollArr = diceArr.map(rollSingleDie);
+        if (rollArr.length > 1 && rollArr[0] === rollArr[1]){
+            gameState.rolledDoubles = true;
+        }
         return rollArr.reduce((val, acc)=>val+acc, 0);
     }
     function rollSingleDie(diceSides){
         return Math.floor(Math.random()*diceSides)+1;
     }
     function playerRolls(){
-        //calls dice js to roll die
-        //call round results
+        gameState.playerRoll = rollDice(rules.vaults[gameState.level-1]['player-die']);
+        console.log('player rolled a '+gameState.playerRoll);
+        endRound();
+    }
+    function endRound(){
+        //check if player rolled doubles
+
+        //generic win condition
+        if (gameState.playerRoll >= gameState.houseRoll && gameState.playerRoll < rules.vaults[gameState.level-1].trap){
+            console.log('player won the round!');
+            gameState.wager=parseInt(gameState.wager)+parseInt(gameState.wager)*rules.vaults[gameState.level-1].odds;
+            console.log(`Gold on the table is now ${gameState.wager}`);
+            if (gameState.level <=3) {
+                console.log('would you like to play again?')
+            } else {
+                gameWinner = 'Player';
+                //end game logic
+            }
+
+        } else {
+            console.log(`The house wins!`);
+        }
+
+    }
+    function crowbarOption(){
+        //if player choses to go with crowbar, update level from level 4 to level 5
+
     }
     function newRound(){
         //reset roundwinner
@@ -108,7 +147,4 @@ $(function(){
 
 //These plugin to the dice.js file, and are based on the main.js file from Narbakov
     initGame();
-    console.log(rollDice([6]));
-    console.log(rollDice([8]));
-    console.log(rollDice([12]));
 })
