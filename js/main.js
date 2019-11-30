@@ -34,6 +34,8 @@ let gameState = {
 const $flowBtn = $('#flow-btn');
 const $crowbarBtn = $('#crowbar-btn');
 const $rollBtn = $('#roll-btn');
+const $endBtn = $('#end-btn');
+const $nextRndBtn = $('#next-rnd');
 
 const $wagerInput = $('.wager');
 const $wager = $('#current-wager');
@@ -44,6 +46,8 @@ $(function(){
         gameState.gameOn ? initGame() : startGame();
     });
     $rollBtn.on('click', playerRolls);
+    $nextRndBtn.on('click', nextRound);
+    $endBtn.on('click', endGame);
 
 
     function initGame(){
@@ -64,10 +68,12 @@ $(function(){
         $flowBtn.html('Start Game');
         $wagerInput.css('display', '');
         $wager.html('');
+        $nextRndBtn.css('display', 'none');
+        $endBtn.css('display', 'none');
     }
 
     function startGame(){
-        gameState.wager = $wagerInput.val() || '0';
+        gameState.wager = parseInt($wagerInput.val()) || 0;
         gameState.gameOn = true;
         $flowBtn.html('Reset');
         $wagerInput.css('display', 'none');
@@ -75,6 +81,8 @@ $(function(){
         startRound();
     }
     function startRound(){
+        //
+        roundStartRender();
         //rolls house dice
         gameState.houseRoll = rollDice(rules.vaults[gameState.level-1]['vault-die']);
         //if house rolls a 1, player loses automatically
@@ -116,12 +124,15 @@ $(function(){
         //generic win condition
         if (gameState.playerRoll >= gameState.houseRoll && gameState.playerRoll < rules.vaults[gameState.level-1].trap){
             console.log('player won the round!');
-            gameState.wager=parseInt(gameState.wager)+parseInt(gameState.wager)*rules.vaults[gameState.level-1].odds;
+            gameState.wager=gameState.wager+gameState.wager*rules.vaults[gameState.level-1].odds;
             console.log(`Gold on the table is now ${gameState.wager}`);
             if (gameState.level <=3) {
-                console.log('would you like to play again?')
+                console.log('would you like to move on to the next vault?')
+                $nextRndBtn.css('display', '');
+                $endBtn.css('display', '');
             } else {
                 gameWinner = 'Player';
+                console.log('you won!');
                 //end game logic
             }
 
@@ -130,6 +141,15 @@ $(function(){
         }
 
     }
+    function endGame(){
+        console.log('Game Ended!');
+        initGame();
+    }
+    function nextRound(){
+        gameState.level+=1;
+        startRound();
+    }
+
     function crowbarOption(){
         //if player choses to go with crowbar, update level from level 4 to level 5
 
@@ -141,6 +161,16 @@ $(function(){
     }
     function render(){
         //at the end of each roll, render results
+    }
+    function gameStartRender(){
+        
+    }
+    function roundStartRender(){
+        $nextRndBtn.css('display', 'none');
+        $endBtn.css('display', 'none');
+    }
+    function roundEndRender(){
+
     }
 
 
