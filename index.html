@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D&Dice</title>
+    <link rel='stylesheet' type='text/css' href='css/main.css'>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="js/main.js" type="text/javascript" defer></script>
+    <!-- <style type="text/css">@import "libs/dice/main.css";</style> -->
+    <style type="text/css">@import "libs/dice/dice/dice.css";</style>
+    <script src="libs/dice/libs/three.min.js" defer></script>
+    <script src="libs/dice/libs/cannon.min.js" defer></script>
+</head>
+<body>
+    <header>
+            <h1>D&Dice: Vaults</h1>
+            <button>Reset</button>
+    </header>
+    
+    <div class='house-dice'>
+        House Dice Goes Here
+        <div id="canvas"></div>
+    </div>
+    <div class='controlPanel'>
+        <div class='message'>Text goes here</div>>
+        <input type='text' class='wager'></input>
+        <p id='current-wager'></p>
+        <button id='flow-btn'>Start New Game</button>
+    </div>
+    <div class='player-dice'>Players Dice Goes Here</div>
+</body>
+</html>
