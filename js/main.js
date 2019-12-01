@@ -39,6 +39,7 @@ const $nextRndBtn = $('#next-rnd');
 
 const $wagerInput = $('.wager');
 const $wager = $('#current-wager');
+const $vaultPic = $('.vault-pic img');
 
 $(function(){
     //Event listeners
@@ -124,6 +125,7 @@ $(function(){
         //generic win condition
         if (gameState.playerRoll >= gameState.houseRoll && gameState.playerRoll < rules.vaults[gameState.level-1].trap){
             console.log('player won the round!');
+            $vaultPic.attr('src', 'resources/vault-open.png');
             gameState.wager=gameState.wager+gameState.wager*rules.vaults[gameState.level-1].odds;
             console.log(`Gold on the table is now ${gameState.wager}`);
             if (gameState.level <=3) {
@@ -166,6 +168,8 @@ $(function(){
         
     }
     function roundStartRender(){
+        $vaultPic.attr('src', 'resources/vault-closed.png');
+        $wager.html(`Your current wager is ${gameState.wager} gold`);
         $nextRndBtn.css('display', 'none');
         $endBtn.css('display', 'none');
     }

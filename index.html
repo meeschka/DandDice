@@ -12,29 +12,38 @@
     <style type="text/css">@import "libs/dice/dice/dice.css";</style>
     <script src="libs/dice/libs/three.min.js" defer></script>
     <script src="libs/dice/libs/cannon.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+    <!-- make up your mind anbout roboto or open sans and then remove the one you aren't using -->
 </head>
 <body>
     <header>
             <h1>D&Dice: Vaults</h1>
-            <button>Reset</button>
     </header>
+    <div class='container'>
+        <div class='control-panel'>
+                <div class='house-dice'>
+                        House Dice Goes Here
+                        <div id="canvas"></div>
+                    </div>
+                <div class='message'>Text goes here</div>>
+                <input type='text' class='wager'></input>
+                <p id='current-wager'></p>
+                <button id='roll-btn'><i class="las la-dice"></i>Roll!</button>
+                <button id='crowbar-btn'><i class="las la-toolbox"></i>Take a Crowbar!</button>
+                <button id='flow-btn'></button>
+                <div class='next-rnd'>
+                    <button id='next-rnd'>Play the Next Round!</button>
+                    <button id='end-btn'>End Game</button>
+                </div>
+                <div class='player-dice'>Players Dice Goes Here</div>
+            </div>
+            <div class='vault-pic'>
+                <img src="resources/vault-closed.png" alt="Vault">
+                <!-- <img src="resources/vault-open.png" alt="Open vault"> -->
+            </div>
+    </div>
     
-    <div class='house-dice'>
-        House Dice Goes Here
-        <div id="canvas"></div>
-    </div>
-    <div class='controlPanel'>
-        <div class='message'>Text goes here</div>>
-        <input type='text' class='wager'></input>
-        <p id='current-wager'></p>
-        <button id='roll-btn'>Roll!</button>
-        <button id='crowbar-btn'>Take a Crowbar!</button>
-        <button id='flow-btn'></button>
-        <div class='next-rnd'>
-            <button id='next-rnd'>Play the Next Round!</button>
-            <button id='end-btn'>End Game</button>
-        </div>
-    </div>
-    <div class='player-dice'>Players Dice Goes Here</div>
 </body>
 </html>
