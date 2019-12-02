@@ -25,9 +25,10 @@ let gameState = {
     turn: -1,
     level: 1,
     wager: 0,
-    houseRoll: null,
+    Roll: null,
     playerRoll: null,
-    gameOn: false
+    gameOn: false,
+    diceToRoll: '3d6+1d4'
 }
 
 //Element Selectors
@@ -174,11 +175,67 @@ $(function(){
         $endBtn.css('display', 'none');
     }
     function roundEndRender(){
+        
+    }
 
+
+/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html   **** */
+
+    const canvas = $t.id('canvas');
+    let label = $t.id('label'); //shows the result of the roll
+    let set = $t.id('set'); //text input for dice numbers
+    let selector_div = $t.id('selector_div'); //contains set, clear, throw, and help
+    let info_div = $t.id('info_div'); //div that displays during/after dice roll
+
+    $t.dice.use_true_random = false;
+    var params = {};
+
+    //make new canvas element, assign dice and dice box classes
+    var box = new $t.dice.dice_box(canvas, { w: 500, h: 600 });
+    box.animate_selector = false;
+
+    function before_roll(vectors, notation, callback) {
+        // change styles to reflect that rolling is happening
+
+
+        // do here rpc call or whatever to get your own result of throw.
+        // then callback with array of your result, example:
+        // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
+        callback();
+    }
+
+    function notation_getter() {
+        return $t.dice.parse_notation(gameState.diceToRoll);
+    }
+
+    function after_roll(notation, result) {
+        console.log(notation);
+        if (params.chromakey || params.noresult) return;
+        var res = result.join(' ');
+        if (notation.constant) {
+            if (notation.constant > 0) res += ' +' + notation.constant;
+            else res += ' -' + Math.abs(notation.constant);
+        }
+        if (result.length > 1) res += ' = ' + 
+                (result.reduce(function(s, a) { return s + a; }) + notation.constant);
+        label.innerHTML = res;
+        info_div.style.display = 'inline-block';
+
+        //use dice result here
+    }
+    box.bind_throw($t.id('throw'), notation_getter, before_roll, after_roll);
+
+    if (params.notation) {
+        set.value = params.notation;
+    }
+    if (params.roll) {
+        $t.raise_event($t.id('throw'), 'mouseup');
+    }
+    else {
+        show_selector();
     }
 
 
 
-//These plugin to the dice.js file, and are based on the main.js file from Narbakov
     initGame();
 })

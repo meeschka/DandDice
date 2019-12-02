@@ -5,6 +5,9 @@
     font-family: 'Open Sans', sans-serif;
     /* font-family: 'Roboto', sans-serif; */
 }
+body {
+    max-height: 100vh;
+}
 button {
     background-color: rgb(160, 212, 230);
     border: 2px solid rgb(33, 38, 79);
@@ -18,29 +21,47 @@ input {
     padding: 3px 8px;
     text-align: center;
 }
-h1 {
+header{
     background-color: rgb(160, 212, 230);
-    font-size: 4em;
-    padding: 20px;
-    text-align: center;
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.container {
+h1 {
+    font-size: 4em;
+}
+.container-col {
+    /* background-color: rgb(238, 186, 108); */
+    background-color: rgb(250, 190, 98);
+    display: flex;
+    flex-direction: column;
+    border-top: 10px solid white;
+    height: 80vh;
+}
+.container-row {
     /* background-color: rgb(238, 186, 108); */
     background-color: rgb(250, 190, 98);
     display: flex;
     border-top: 10px solid white;
+    height: 80vh;
 }
 .vault-pic{
-    width: 50%;
+    max-width: 50%;
     border-left: 5px solid white;
 }
 .vault-pic img {
-    max-width: 100%;
     max-height: 100%;
     /* object-fit: cover; */
 }
 .control-panel{
-    width: 50%;
     border-right: 5px solid white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+.dice {
+    min-width: 50%;
 }
 
