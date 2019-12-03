@@ -24,5 +24,14 @@ Vault Level | Vault Die | Player Die | Payout | Trap #
 
   ### Credits
   Vaults and it's associated variants were created by Jerry Holkins of Penny Arcade. Additional variants and specific ruleset were based on [this subreddit discussion](https://www.reddit.com/r/TheCTeam/comments/7ia630/giants_and_halflings_pickpocket_and_vaults/).
-  The 3D Dice Roller was created using [threejs-dice](https://github.com/byWulf/threejs-dice) by byWulf, based on original code by Anton Natarov and provided for free at his [website](http://www.teall.info/2014/01/online-3d-dice-roller.html).
+  The 3D Dice Roller was created using Anton Natarov's [free dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.html).
   Vault graphics are from the (open source illustration kit by Vijay Verma)[https://illlustrations.co/].
+
+
+### TO DO
+Make reset button disappear during rolling
+add modal with complete rules overview
+remove crowbar option once you've rolled for the house in round 4
+update text on win condition with houseroll and playerroll
+fix it so that there is always at least one button present
+move on to next round button should automatically throw for the house

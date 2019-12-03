@@ -198,7 +198,7 @@ $(function(){
     var params = {};
 
     //make new canvas element, assign dice and dice box classes
-    var box = new $t.dice.dice_box(canvas, { w: 500, h: 600 });
+    var box = new $t.dice.dice_box(canvas);
     box.animate_selector = false;
 
     function before_roll(vectors, notation, callback) {
@@ -207,7 +207,7 @@ $(function(){
         // do here rpc call or whatever to get your own result of throw.
         // then callback with array of your result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        callback([2,2]);
+        callback([2]);
     }
 
     function notation_getter() {
