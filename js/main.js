@@ -31,6 +31,9 @@ const $wagerInput = $('.wager');
 const $wager = $('#wager-message');
 const $vaultPic = $('.vault-pic img');
 const $messageEl = $('.message');
+const $rulesBtn = $('#rules-btn');
+const $rulesModal = $('#rules-modal');
+const $closeModal = $('.close');
 
 $(function(){
     //Event listeners
@@ -39,6 +42,8 @@ $(function(){
     });
     $nextRndBtn.on('click', nextRound);
     $crowbarBtn.on('click', crowbarOption);
+    $rulesBtn.on('click', gameRules);
+    $closeModal.on('click', closeRules);
 
     //game
     function initGame(){
@@ -161,6 +166,7 @@ $(function(){
     function gameStartRender(){
         
     }
+    
     function roundStartRender(){
         if (gameState.rolledDoubles) {
             $messageEl.html(`You found the ${rules.vaults[0].doubles}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
@@ -187,6 +193,13 @@ $(function(){
     }
     function roundEndRender(){
         
+    }
+    //MODAL FUNCTIONS
+    function gameRules(){
+        $rulesModal.css('display', 'block');
+    }
+    function closeRules(){
+        $rulesModal.css('display', 'none');
     }
 
 
@@ -225,8 +238,6 @@ $(function(){
         endTurn();
     }
     
-    
-
     if (params.notation) {
         set.value = params.notation;
     }

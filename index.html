@@ -28,6 +28,7 @@
                 <button id='throw'></button>
                 <button id='next-rnd'>Play the Next Round!</button>
                 <button id='flow-btn'>Reset Game</button>
+                <button id='rules-btn'>Rules</button>
             </div>
         </div>
         <div class='container-row'>
@@ -36,12 +37,34 @@
                     <img src="resources/vault-closed.png" alt="Vault">
                 </div>
         </div>
+        <div class='modal' id='rules-modal'>
+            <div class='modal-content'>
+                <span class='close'>&times;</span>
+                <p>
+                    After the player makes their wager, the house roles the first die, an eight-sided die (d8). 
+                    This is the difficulty of the vault. If the house rolls a 1, the vault is a mimic and the player loses immediately.
+                </p>
+                <p>
+                    The player rolls two six-sided dice (2d6), trying to roll over the vault number.
+                    If the player rolls two ones, they activate the trapdoor, passing immediately to the second vault without winning anything from the second. 
+                    If the player rolls a 9 or higher, they activate the trap and lose.
+                </p>
+                <p>
+                    Players who win a round of vaults move on to the next vault. Successive rounds are harder as the vault die is larger (progressing to 1d10, 1d12, and finally 1d12), but the payout is also larger.
+                    The table below shows the payout on the original bet, and the trap numbers (if any).
+                </p> 
+                <p>
+                    On the final vault, the player has the option of taking a crowbar.
+                    This means they can add an additional four-sided die (1d4) to their roll, but the payout amount is reduced.
+                </p> 
+            </div>
+        </div>
             
     </div>
     <script src="resources/dice/libs/three.min.js"></script>
     <script src="resources/dice/libs/cannon.min.js"></script>
     <script type="text/javascript" src="resources/dice/teal.js"></script>
     <script type="text/javascript" src="resources/dice/dice/dice.js"></script>
-    <script src="js/main.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript" defer></script>
 </body>
 </html>

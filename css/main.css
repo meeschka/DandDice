@@ -80,3 +80,33 @@ h1 {
 .la-dice {
     padding-right: 5px;
 }
+.modal{
+    position: fixed;
+    z-index: 1;
+    left: 20%;
+    top: 12%;
+    width: 60%;
+    height: 70%;
+    overflow: auto;
+    display: none;
+    border: 1px solid rgb(33, 38, 79);
+    background-color: rgb(210, 236, 248);
+}
+
+.modal-content{
+    margin: 10% auto;
+    padding: 20px;
+    background-color: rgb(210, 236, 248);
+    width: 80%;
+}
+.close {
+    color: rgb(33, 38, 79);
+    float: right;
+    font-size: 3em;
+    font-weight: bold;
+}
+.close:hover, .close:focus {
+    color: rgb(250, 190, 98);
+    text-decoration: none;
+    cursor: pointer;
+}

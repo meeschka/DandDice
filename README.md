@@ -5,11 +5,11 @@ Dungeons and dragons dice game for GA Project #1
 ### Rules of Play - Vaults
 After the player makes their wager, the house roles the first die, an eight-sided die (d8). This is the difficulty of the vault. If the house rolls a 1, the vault is a mimic and the player loses immediately.
 
-The player rolls two six-sided dice (2d6), trying to roll over the vault number. If the player rolls two ones, they activate the trapdoor, passing immediately to the second vault without winning anything from the second. If the player rolls a 9 or higher, they activate the trap and lose.
+The player rolls two six-sided dice (2d6), trying to roll over the vault number. If the player rolls doubles, they activate the trapdoor, passing immediately to the second vault without winning anything from the second. If the player rolls a 9 or higher, they activate the trap and lose.
 
 Players who win a round of vaults move on to the next vault. Successive rounds are harder as the vault die is larger (progressing to 1d10, 1d12, and finally 1d12), but the payout is also larger. The table below shows the payout on the original bet, and the trap numbers (if any).
 
-On the final vault, the player has the option of taking a lockpick. This means they can add an additional four-sided die (1d4) to their roll, but the payout amount is reduced.
+On the final vault, the player has the option of taking a crowbar. This means they can add an additional four-sided die (1d4) to their roll, but the payout amount is reduced.
 
 Vault Level | Vault Die | Player Die | Payout | Trap #
 ============|===========|============|========|========
@@ -35,3 +35,8 @@ remove crowbar option once you've rolled for the house in round 4
 update text on win condition with houseroll and playerroll
 fix it so that there is always at least one button present
 move on to next round button should automatically throw for the house
+make canvas responsive
+add 'demo mode'
+refactor to better adhere to GA requirements
+redo README to get all required sections
+add option to switch between vaults and pickpocket
