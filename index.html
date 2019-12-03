@@ -7,7 +7,6 @@
     <title>D&Dice</title>
     <link rel='stylesheet' type='text/css' href='css/main.css'>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="js/main.js" type="text/javascript" defer></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 
@@ -19,43 +18,30 @@
     </header>
     <div class='container-col'>
         <div class='control-panel'>
-                
-            <div class='message'>Text goes here</div>
-            <input type='text' class='wager'></input>
-            <p id='current-wager'></p>
-            <button id='roll-btn'><i class="las la-dice"></i>Roll!</button>
-            <button id='crowbar-btn'><i class="las la-toolbox"></i>Take a Crowbar!</button>
-            <button id='flow-btn'></button>
-            <button id='throw'>Throw</button>
-            <div class='next-rnd'>
-                <button id='next-rnd'>Play the Next Round!</button>
-                <button id='end-btn'>End Game</button>
+            <div class='message-group'>
+                <div class='message'></div>
+                <p id='wager-message'></p>
             </div>
-            <input type="text" id="set" value="2d6"></input><br/>
-                        <div id="info_div">Info Div</div>
-                        <div id="selector_div">Selector Div</div>
-                        <span id="label"></span>
+            <input type='text' class='wager' placeholder='Your wager'></input>
+            <div class='btn-row'>
+                <button id='crowbar-btn'><i class="las la-toolbox"></i>Take a Crowbar!</button>
+                <button id='throw'></button>
+                <button id='next-rnd'>Play the Next Round!</button>
+                <button id='flow-btn'>Reset Game</button>
+            </div>
         </div>
         <div class='container-row'>
                 <div class='dice dice_box' id='canvas'></div>
                 <div class='vault-pic'>
                     <img src="resources/vault-closed.png" alt="Vault">
-                    <!-- <img src="resources/vault-open.png" alt="Open vault"> -->
                 </div>
         </div>
             
     </div>
     <script src="resources/dice/libs/three.min.js"></script>
     <script src="resources/dice/libs/cannon.min.js"></script>
-    <!--script type="text/javascript" src="https://drive.google.com/uc?id=0ByGeV2TiysmOelhLSnlUQ3ZMc2M"></script>
-    <script type="text/javascript" src="https://drive.google.com/uc?id=0ByGeV2TiysmOczhfWW90OEV0dmM"></script-->
-
-
     <script type="text/javascript" src="resources/dice/teal.js"></script>
     <script type="text/javascript" src="resources/dice/dice/dice.js"></script>
-    <script type="text/javascript" src="resources/dice/dice/main.js"></script>
-    <script type="text/javascript" defer="defer">
-        dice_initialize(document.body);
-    </script>
+    <script src="js/main.js" type="text/javascript"></script>
 </body>
 </html>

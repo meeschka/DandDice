@@ -90,7 +90,7 @@ function dice_initialize(container) {
 
         //use dice result here
     }
-
+//you dont need to bind the mouse if you aren't using the mouse to roll
     box.bind_mouse(container, notation_getter, before_roll, after_roll);
     box.bind_throw($t.id('throw'), notation_getter, before_roll, after_roll);
 
