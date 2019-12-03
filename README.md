@@ -2,6 +2,9 @@
 ### Bringing Faerun's Most Beloved Dice Games to Your Browser
 Dungeons and dragons dice game for GA Project #1
 
+### Getting Started
+You can find Vaults [here](). 
+
 ### Rules of Play - Vaults
 After the player makes their wager, the house roles the first die, an eight-sided die (d8). This is the difficulty of the vault. If the house rolls a 1, the vault is a mimic and the player loses immediately.
 
@@ -22,21 +25,15 @@ Vault Level | Vault Die | Player Die | Payout | Trap #
   A player can choose to walk away after completing any vault. All winnings from the game are automatically wagered at the next vault if the player decides to continue.
 
 
-  ### Credits
-  Vaults and it's associated variants were created by Jerry Holkins of Penny Arcade. Additional variants and specific ruleset were based on [this subreddit discussion](https://www.reddit.com/r/TheCTeam/comments/7ia630/giants_and_halflings_pickpocket_and_vaults/).
-  The 3D Dice Roller was created using Anton Natarov's [free dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.html).
-  Vault graphics are from the (open source illustration kit by Vijay Verma)[https://illlustrations.co/].
+
+### Credits
+Vaults and it's associated variants were created by Jerry Holkins of Penny Arcade. Additional variants and specific ruleset were based on [this subreddit discussion](https://www.reddit.com/r/TheCTeam/comments/7ia630/giants_and_halflings_pickpocket_and_vaults/).
+The 3D Dice Roller was created using Anton Natarov's [free dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.html).
+Vault graphics are from the (open source illustration kit by Vijay Verma)[https://illlustrations.co/].
 
 
 ### TO DO
-Make reset button disappear during rolling
-add modal with complete rules overview
-remove crowbar option once you've rolled for the house in round 4
-update text on win condition with houseroll and playerroll
-fix it so that there is always at least one button present
-move on to next round button should automatically throw for the house
 make canvas responsive
-add 'demo mode'
 refactor to better adhere to GA requirements
 redo README to get all required sections
 add option to switch between vaults and pickpocket

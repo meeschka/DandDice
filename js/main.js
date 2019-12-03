@@ -59,7 +59,9 @@ $(function(){
             playerRoll: null,
             gameOn: false,
             rolledDoubles: false,
-            diceToRoll: '1d8'
+            diceToRoll: '1d8',
+            demoMode: false,
+            demoNum: -1
         }
         $throwBtn.css('display', 'none');
         $crowbarBtn.css('display', 'none');
@@ -220,7 +222,12 @@ $(function(){
         // do here rpc call or whatever to get your own result of throw.
         // then callback with array of your result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        callback([2]);
+        demoArr = [[4], [2, 3], [8], [3, 6], [12], [6,6], [10], [5, 6]];
+        if (gameState.demoMode){
+            gameState.demoNum++;
+            callback(demoArr[gameState.demoNum]);
+        } else callback();
+        //callback();
     }
 
     function notation_getter() {
