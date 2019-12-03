@@ -60,7 +60,7 @@ $(function(){
             gameOn: false,
             rolledDoubles: false,
             diceToRoll: '1d8',
-            demoMode: false,
+            demoMode: true,
             demoNum: -1
         }
         $throwBtn.css('display', 'none');
@@ -126,32 +126,30 @@ $(function(){
             $messageEl.html(`The ${rules.vaults[0].enemy} ${rules.vaults[0].lowerBound}! You lose.`);
         } else if (gameState.houseRoll > gameState.playerRoll) {
             $messageEl.html(`You only rolled a ${gameState.playerRoll}, the ${rules.vaults[0].difficultyNum} was ${gameState.houseRoll}. You lose.`);
-        } else $messageEl.html(`You rolled too high and ${rules.vaults[0].overshoot}. You lose.`);
-        
+        } else $messageEl.html(`You rolled above the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll} and ${rules.vaults[0].overshoot}. You lose.`);
+        $flowBtn.css('display','');
         $wager.css('display', 'none');
         $throwBtn.css('display', 'none');
     }
     function playerWinsRound(){
         $throwBtn.css('display', 'none');
         $flowBtn.css('display', 'none');
-
-        $messageEl.html('player won the round!');
         $vaultPic.attr('src', 'resources/vault-open.png');
         gameState.wager=gameState.wager+gameState.wager*rules.vaults[gameState.level].odds;
         optionToContinue();
     }
     function rolledDoubles(){
-        $messageEl.html(`You found the ${rules.vaults[0].doubles}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
+        $messageEl.html(`You found the ${rules.vaults[0].doubles} by rolling doubles! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
         if (gameState.level >3) {gameState.level = 3};
         $nextRndBtn.css('display', '');
     }
     function optionToContinue(){
         if (gameState.level <=3) {
-            $messageEl.html(`You won the round! Would you like to move on to the next vault?`);
+            $messageEl.html(`You won the round with a ${gameState.playerRoll}, which is higher than the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll}! Would you like to move on to the next vault?`);
             $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules.vaults[gameState.level+1].odds}:1`);
             $nextRndBtn.css('display', '');
         } else {
-            $messageEl.html(`You won! Your initial wager has become ${gameState.wager}`);
+            $messageEl.html(`You won the game! Your initial wager has become ${gameState.wager}`);
             $wager.html('');
             $flowBtn.css('display', '');
         }
@@ -196,7 +194,7 @@ $(function(){
     function roundEndRender(){
         
     }
-    //MODAL FUNCTIONS
+/*****   Functions related to the rules modal   *****/
     function gameRules(){
         $rulesModal.css('display', 'block');
     }
@@ -205,7 +203,7 @@ $(function(){
     }
 
 
-/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html   **** */
+/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html   *****/
 
     const canvas = $t.id('canvas');
 
