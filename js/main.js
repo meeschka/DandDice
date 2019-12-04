@@ -4,7 +4,7 @@
 let rules = {
     vaults:
         [   
-            {difficultyNum: 'Vault Number', lowerBound: 'was a Mimic', overshoot: 'activated the trap', enemy: 'Vault', push: 'trapdoor', lastRound: 4, title: 'Vaults'},
+            {difficultyNum: 'Vault Number', lowerBound: 'was a Mimic', overshoot: 'activated the trap', overshootNoun: 'trap', enemy: 'Vault', push: 'found the trapdoor', lastRound: 4, title: 'Vaults'},
             {level: 1, 'vault-die': '1d8', 'player-die': '2d6', odds: 1, trap: 9, split: false},
             {level: 2, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: false},
             {level: 3, 'vault-die': '1d12', 'player-die': '2d6', odds: 3, trap: 21, split: false},
@@ -13,7 +13,7 @@ let rules = {
             
         ],
     giantsAndHalflings: [
-        {difficultyNum: 'knee', lowerBound: 'Kicked You', overshoot: 'entered the maw', enemy: 'Giant', push: 'hit the knee', doubleOnes: `There's a snake in the grass! The giant runs away.`, lastRound: 1, title: 'Giants and Halflings'},
+        {difficultyNum: 'knee', lowerBound: 'Kicked You', overshoot: 'entered the maw', overshootNoun: 'maw', enemy: 'Giant', push: 'hit the knee', doubleOnes: `There's a snake in the grass! The giant runs away.`, lastRound: 1, title: 'Giants and Halflings'},
         {level: 1, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: true }
     ]
 }
@@ -137,11 +137,17 @@ $(function(){
         optionToContinue();
     }
     function push(){
-        if (rules[gameState.game][0].rolledDoubleOnes){
-            $messageEl.html(`${rules[gameState.game][0].push} You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
-        } else $messageEl.html(`You found the ${rules[gameState.game][0].push}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
-        if (gameState.level >3) {gameState.level = 3};
+        playSound('push');
+        if (gameState.rolledDoubleOnes && rules[gameState.game][0].doubleOnes){
+            $messageEl.html(`${rules[gameState.game][0].doubleOnes}`);
+        } else {
+            $messageEl.html(`You ${rules[gameState.game][0].push}! You do not win anything this round, but you automatically proceed to the next ${rules[gameState.game][0].enemy}`);
+        }
+        if (gameState.level >= rules[gameState.game][0].lastRound) {
+            gameState.level = rules[gameState.game][0].lastRound-1;
+        }
         $nextRndBtn.css('display', '');
+
     }
     function optionToContinue(){
         if (gameState.level < rules[gameState.game][0].lastRound) {
@@ -186,10 +192,7 @@ $(function(){
         $wagerInput.css('display', 'none');
     }
     function roundStartRender(){
-        if (gameState.rolledDoubleOnes) {
-            playSound('push');
-            $messageEl.html(`You found the ${rules[gameState.game][0].push}! You do not win anything this round, but you automatically proceed to the next ${rules[gameState.game][0].enemy}`);
-        } if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
+        if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
             $messageEl.html('Round 4, with a crowbar!')
             $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round 4 with a crowbar are ${rules[gameState.game][gameState.level].odds}:1`);
         } else {
@@ -213,7 +216,7 @@ $(function(){
         $flowBtn.css('display', 'none');
     }
     function afterHouseRender(){
-        const trapMessage = gameState.level <= 2 ? ` but beware the trap at ${rules[gameState.game][gameState.level].trap} and above!` : `.`;
+        const trapMessage = gameState.level <= 2 ? ` but beware the ${rules[gameState.game][0].overshootNoun} at ${rules[gameState.game][gameState.level].trap} and above!` : `.`;
         $messageEl.html(`The house rolled a ${gameState.houseRoll}. You will need to roll a ${gameState.houseRoll} or higher${trapMessage}`);   
         $throwBtn.css('display', '');
         $throwBtn.html(`<i class="las la-dice"></i>Roll!`);
@@ -253,7 +256,7 @@ $(function(){
         // do here rpc call or whatever to get your own result of throw.
         // then callback with array of your result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        demoArr = [[4], [2, 3], [8], [1,1], [11], [6,5], [13], [5, 6]];
+        demoArr = [[4], [1, 1], [8], [1,1], [11], [6,5], [13], [5, 6]];
         if (gameState.demoMode){
             gameState.demoNum++;
             callback(demoArr[gameState.demoNum]);
