@@ -74,7 +74,6 @@ $(function(){
     }
 
     function startGame(){
-        console.log('start game called');
         gameState.gameOn = true;
         $flowBtn.html('Reset');
         $wager.css('display', 'none')
@@ -83,15 +82,11 @@ $(function(){
         startRound();
     }
     function startRound(){
-        console.log(gameState);
         roundStartRender();
         gameState.houseRoll = null;
         gameState.playerRoll = null;
         gameState.rolledDoubles = false;
         gameState.diceToRoll = rules.vaults[gameState.level]['vault-die'];
-        $throwBtn.css('display', '');
-        $throwBtn.html('Roll for the House');
-
     }
     function playerSetup(){
         afterHouseRender();
@@ -127,9 +122,7 @@ $(function(){
         } else if (gameState.houseRoll > gameState.playerRoll) {
             $messageEl.html(`You only rolled a ${gameState.playerRoll}, the ${rules.vaults[0].difficultyNum} was ${gameState.houseRoll}. You lose.`);
         } else $messageEl.html(`You rolled above the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll} and ${rules.vaults[0].overshoot}. You lose.`);
-        $flowBtn.css('display','');
-        $wager.css('display', 'none');
-        $throwBtn.css('display', 'none');
+        gameEndRender();
     }
     function playerWinsRound(){
         $throwBtn.css('display', 'none');
@@ -150,8 +143,7 @@ $(function(){
             $nextRndBtn.css('display', '');
         } else {
             $messageEl.html(`You won the game! Your initial wager has become ${gameState.wager}`);
-            $wager.html('');
-            $flowBtn.css('display', '');
+            gameEndRender();
         }
     }
     function crowbarOption(){
@@ -179,6 +171,8 @@ $(function(){
         }
         $vaultPic.attr('src', 'resources/vault-closed.png');
         $wager.css('display', '');
+        $throwBtn.css('display', '');
+        $throwBtn.html('Roll for the House');
         
         $nextRndBtn.css('display', 'none');
         if (gameState.level === 4) {
@@ -187,12 +181,19 @@ $(function(){
             $wager.html(`Your current wager is ${gameState.wager} gold! For the final round, you can roll an extra 1d4 and choose to reduce the odds from ${rules.vaults[gameState.level].odds}:1 to ${rules.vaults[gameState.level+1].odds}:1`);
         }
     }
+    function beforeRollRender(){
+        $throwBtn.css('display', 'none');
+        $crowbarBtn.css('display', 'none');
+        $flowBtn.css('display', 'none');
+    }
     function afterHouseRender(){
         const trapMessage = gameState.level <= 2 ? ` but beware the trap at ${rules.vaults[gameState.level].trap} and above!` : `.`;
-        $messageEl.html(`The house rolled a ${gameState.houseRoll}. You will need to roll a ${gameState.houseRoll} or higher${trapMessage}`);
+        $messageEl.html(`The house rolled a ${gameState.houseRoll}. You will need to roll a ${gameState.houseRoll} or higher${trapMessage}`);   
     }
-    function roundEndRender(){
-        
+    function gameEndRender(){
+        $flowBtn.css('display','');
+        $wager.css('display', 'none');
+        $throwBtn.css('display', 'none');
     }
 /*****   Functions related to the rules modal   *****/
     function gameRules(){
@@ -216,7 +217,7 @@ $(function(){
 
     function before_roll(vectors, notation, callback) {
         // change styles to reflect that rolling is happening
-        $throwBtn.css('display', 'none');
+        beforeRollRender();
         // do here rpc call or whatever to get your own result of throw.
         // then callback with array of your result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
@@ -237,8 +238,6 @@ $(function(){
         if (gameState.turn === 1) {
             gameState.rolledDoubles =  result[0] === result[1] ? true : false;
             gameState.playerRoll = result.reduce(function(s, a) { return s + a; });
-            console.log('from after roll')
-            console.log(gameState);
         } else gameState.houseRoll = result.reduce(function(s, a) { return s + a; });
         endTurn();
     }
