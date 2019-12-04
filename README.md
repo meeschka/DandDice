@@ -16,11 +16,11 @@ On the final vault, the player has the option of taking a crowbar. This means th
 
 Vault Level | Vault Die | Player Die | Payout | Trap #
 ------------|-----------|------------|--------|--------
-       Vault 1   |    1d8    |    2d6     |   1:1  |   9+
-       Vault 2   |    1d10   |    2d6     |   2:1  |   11+
-       Vault 3   |    1d12   |    2d6     |   3:1  |   no trap 
-       Vault 4   |    1d20   |    2d6     |   5:1  |   no trap 
-  Vault 4 + lockpick  |    1d20   | 2d6 + 1d4  |   4:1  |   no trap
+Vault 1   |    1d8    |    2d6     |   1:1  |   9+
+Vault 2   |    1d10   |    2d6     |   2:1  |   11+
+Vault 3   |    1d12   |    2d6     |   3:1  |   no trap 
+Vault 4   |    1d20   |    2d6     |   5:1  |   no trap 
+Vault 4 + lockpick  |    1d20   | 2d6 + 1d4  |   4:1  |   no trap
 
   A player can choose to walk away after completing any vault. All winnings from the game are automatically wagered at the next vault if the player decides to continue.
 

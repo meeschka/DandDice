@@ -24,6 +24,12 @@ let gameState = {}
 //for resizing canvas
 const debounceTime = 50; 
 let debounceTimeoutHandle;
+const sounds = {
+    gameWin: 'resources/gameWin.mp3',
+    roundWin: 'resources/roundWin.mp3',
+    gameLoss: 'resources/lose.wav'
+};
+const player = new Audio();
 
 $(function(){
     /*****************************************/
@@ -70,7 +76,7 @@ $(function(){
             gameOn: false,
             rolledDoubles: false,
             diceToRoll: '1d8',
-            demoMode: true,
+            demoMode: false,
             demoNum: -1
         }
         $throwBtn.css('display', 'none');
@@ -127,6 +133,7 @@ $(function(){
         } else if (gameState.houseRoll > gameState.playerRoll) {
             $messageEl.html(`You only rolled a ${gameState.playerRoll}, the ${rules.vaults[0].difficultyNum} was ${gameState.houseRoll}. You lose.`);
         } else $messageEl.html(`You rolled above the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll} and ${rules.vaults[0].overshoot}. You lose.`);
+        playSound('gameLoss');
         gameEndRender();
     }
     function playerWinsRound(){
@@ -143,10 +150,12 @@ $(function(){
     }
     function optionToContinue(){
         if (gameState.level <=3) {
+            playSound('roundWin');
             $messageEl.html(`You won the round with a ${gameState.playerRoll}, which is higher than the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll}! Would you like to move on to the next vault?`);
             $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules.vaults[gameState.level+1].odds}:1`);
             $nextRndBtn.css('display', '');
         } else {
+            playSound('gameWin');
             $messageEl.html(`You won the game! Your initial wager has become ${gameState.wager}`);
             gameEndRender();
         }
@@ -157,6 +166,10 @@ $(function(){
         startRound();
         $crowbarBtn.css('display', 'none')
     }
+    function playSound(name) {
+        player.src = sounds[name];
+        player.play();
+      }
     /*****************************************/
     /********* RENDER FUNCTIONS **********/
     /*****************************************/

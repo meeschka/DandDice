@@ -301,7 +301,7 @@
     }
 
     this.create_d6 = function() {
-        this.scale = 80;
+        this.scale = 70;
         if (!this.d6_geometry) this.d6_geometry = this.create_d6_geometry(this.scale * 0.9);
         if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
@@ -309,7 +309,7 @@
     }
 
     this.create_d8 = function() {
-        this.scale = 80;
+        this.scale = 70;
         if (!this.d8_geometry) this.d8_geometry = this.create_d8_geometry(this.scale);
         if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.2));
@@ -317,7 +317,7 @@
     }
 
     this.create_d10 = function() {
-        this.scale = 80;
+        this.scale = 70;
         if (!this.d10_geometry) this.d10_geometry = this.create_d10_geometry(this.scale * 0.9);
         if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
@@ -325,7 +325,7 @@
     }
 
     this.create_d12 = function() {
-        this.scale = 80;
+        this.scale = 70;
         if (!this.d12_geometry) this.d12_geometry = this.create_d12_geometry(this.scale * 0.9);
         if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
@@ -333,7 +333,7 @@
     }
 
     this.create_d20 = function() {
-        this.scale = 80;
+        this.scale = 70;
         if (!this.d20_geometry) this.d20_geometry = this.create_d20_geometry(this.scale);
         if (!this.dice_material) this.dice_material = new THREE.MeshFaceMaterial(
                 this.create_dice_materials(this.standart_d20_dice_face_labels, this.scale / 2, 1.0));
