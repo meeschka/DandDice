@@ -14,29 +14,37 @@ let rules = {
         ],
     pickpocket: [
         {level: 1, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: true },
-        {difficultyNum: 'Pocket', lowerBound: 'Kicked You', overshoot: 'were cut by the sword', enemy: 'Mark'}
+        {difficultyNum: 'Pocket', lowerBound: 'Kicked You', overshoot: 'were cut by the sword', enemy: 'Mark', doubles: 'better mark'}
     ]
-
-    //put strings in different array
 }
+/*****************************************/
 ///GLOBAL VARIABLES
+/*****************************************/
 let gameState = {}
-
-//Element Selectors
-const $flowBtn = $('#flow-btn');
-const $crowbarBtn = $('#crowbar-btn');
-const $nextRndBtn = $('#next-rnd');
-const $throwBtn = $('#throw');
-const $wagerInput = $('.wager');
-const $wager = $('#wager-message');
-const $vaultPic = $('.vault-pic img');
-const $messageEl = $('.message');
-const $rulesBtn = $('#rules-btn');
-const $rulesModal = $('#rules-modal');
-const $closeModal = $('.close');
+//for resizing canvas
+const debounceTime = 50; 
+let debounceTimeoutHandle;
 
 $(function(){
+    /*****************************************/
+    //Element Selectors
+    /*****************************************/
+    const $flowBtn = $('#flow-btn');
+    const $crowbarBtn = $('#crowbar-btn');
+    const $nextRndBtn = $('#next-rnd');
+    const $throwBtn = $('#throw');
+    const $wagerInput = $('.wager');
+    const $wager = $('#wager-message');
+    const $vaultPic = $('.vault-pic img');
+    const $messageEl = $('.message');
+    const $rulesBtn = $('#rules-btn');
+    const $rulesModal = $('#rules-modal');
+    const $closeModal = $('.close');
+    const $canvasBoxEl = $('#canvas');
+    
+    /*****************************************/
     //Event listeners
+    /*****************************************/
     $flowBtn.on('click', function(){
         gameState.gameOn ? initGame() : startGame();
     });
@@ -44,8 +52,10 @@ $(function(){
     $crowbarBtn.on('click', crowbarOption);
     $rulesBtn.on('click', gameRules);
     $closeModal.on('click', closeRules);
-
-    //game
+    addEventListener('resize', debouncedResize);
+    /*****************************************/
+    // Game Logic
+    /*****************************************/
     function initGame(){
         console.log('init game called');
         gameState = {
@@ -75,9 +85,7 @@ $(function(){
 
     function startGame(){
         gameState.gameOn = true;
-        $flowBtn.html('Reset');
-        $wager.css('display', 'none')
-        $wagerInput.css('display', 'none');
+        gameStartRender();
         gameState.wager = parseInt($wagerInput.val())?parseInt($wagerInput.val()) : 0;
         startRound();
     }
@@ -90,10 +98,7 @@ $(function(){
     }
     function playerSetup(){
         afterHouseRender();
-        //display 'roll' button for player
         gameState.diceToRoll = rules.vaults[gameState.level]['player-die'];
-        $throwBtn.css('display', '');
-        $throwBtn.html(`<i class="las la-dice"></i>Roll!`);
     }
     
     function nextRound(){
@@ -152,34 +157,35 @@ $(function(){
         startRound();
         $crowbarBtn.css('display', 'none')
     }
-    function render(){
-        //at the end of each roll, render results
-    }
+    /*****************************************/
+    /********* RENDER FUNCTIONS **********/
+    /*****************************************/
+
     function gameStartRender(){
-        
+        $flowBtn.html('Reset');
+        $wager.css('display', 'none')
+        $wagerInput.css('display', 'none');
     }
-    
     function roundStartRender(){
         if (gameState.rolledDoubles) {
             $messageEl.html(`You found the ${rules.vaults[0].doubles}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
-        } if (gameState.level === 5) {
+        } if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
             $messageEl.html('Round 4, with a crowbar!')
             $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round 4 with a crowbar are ${rules.vaults[gameState.level].odds}:1`);
         } else {
             $messageEl.html(`Round ${gameState.level}!`);
             $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round ${gameState.level} are ${rules.vaults[gameState.level].odds}:1`);
         }
-        $vaultPic.attr('src', 'resources/vault-closed.png');
-        $wager.css('display', '');
-        $throwBtn.css('display', '');
-        $throwBtn.html('Roll for the House');
-        
-        $nextRndBtn.css('display', 'none');
         if (gameState.level === 4) {
             //add button for crowbar option, which calls crowBarOption() when clicked
             $crowbarBtn.css('display', '');
             $wager.html(`Your current wager is ${gameState.wager} gold! For the final round, you can roll an extra 1d4 and choose to reduce the odds from ${rules.vaults[gameState.level].odds}:1 to ${rules.vaults[gameState.level+1].odds}:1`);
         }
+        $vaultPic.attr('src', 'resources/vault-closed.png');
+        $wager.css('display', '');
+        $throwBtn.css('display', '');
+        $throwBtn.html('Roll for the House');
+        $nextRndBtn.css('display', 'none');
     }
     function beforeRollRender(){
         $throwBtn.css('display', 'none');
@@ -189,13 +195,18 @@ $(function(){
     function afterHouseRender(){
         const trapMessage = gameState.level <= 2 ? ` but beware the trap at ${rules.vaults[gameState.level].trap} and above!` : `.`;
         $messageEl.html(`The house rolled a ${gameState.houseRoll}. You will need to roll a ${gameState.houseRoll} or higher${trapMessage}`);   
+        $throwBtn.css('display', '');
+        $throwBtn.html(`<i class="las la-dice"></i>Roll!`);
     }
     function gameEndRender(){
         $flowBtn.css('display','');
         $wager.css('display', 'none');
         $throwBtn.css('display', 'none');
     }
+    
+/*****************************************/
 /*****   Functions related to the rules modal   *****/
+/*****************************************/
     function gameRules(){
         $rulesModal.css('display', 'block');
     }
@@ -203,9 +214,9 @@ $(function(){
         $rulesModal.css('display', 'none');
     }
 
-
-/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html   *****/
-
+/*****************************************/
+/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html . It controls the dice and canvas  *****/
+/*****************************************/
     const canvas = $t.id('canvas');
 
     $t.dice.use_true_random = false;
@@ -252,7 +263,16 @@ $(function(){
         //what should be rendered during setup
     }
 
+    //making canvas responsive
+    function debouncedResize(){
+        clearTimeout(debounceTimeoutHandle); //clears pending debounce events
+        debounceTimeoutHandle = setTimeout(resizeCanvas, debounceTime);
 
+    }
+    function resizeCanvas(){
+        box.reinit(canvas, {w: $canvasBoxEl.innerWidth(), h: $canvasBoxEl.innerHeight()});        
+    }
+    //initializing the code
     initGame();
     box.bind_throw($t.id('throw'), notation_getter, before_roll, after_roll);
 })

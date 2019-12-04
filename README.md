@@ -15,7 +15,7 @@ Players who win a round of vaults move on to the next vault. Successive rounds a
 On the final vault, the player has the option of taking a crowbar. This means they can add an additional four-sided die (1d4) to their roll, but the payout amount is reduced.
 
 Vault Level | Vault Die | Player Die | Payout | Trap #
-============|===========|============|========|========
+------------|-----------|------------|--------|--------
        Vault 1   |    1d8    |    2d6     |   1:1  |   9+
        Vault 2   |    1d10   |    2d6     |   2:1  |   11+
        Vault 3   |    1d12   |    2d6     |   3:1  |   no trap 
@@ -24,12 +24,14 @@ Vault Level | Vault Die | Player Die | Payout | Trap #
 
   A player can choose to walk away after completing any vault. All winnings from the game are automatically wagered at the next vault if the player decides to continue.
 
+### Screenshots
 
+### Technologies Used
 
 ### Credits
 Vaults and it's associated variants were created by Jerry Holkins of Penny Arcade. Additional variants and specific ruleset were based on [this subreddit discussion](https://www.reddit.com/r/TheCTeam/comments/7ia630/giants_and_halflings_pickpocket_and_vaults/).
 The 3D Dice Roller was created using Anton Natarov's [free dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.html).
-Vault graphics are from the (open source illustration kit by Vijay Verma)[https://illlustrations.co/].
+Vault graphics are from the [open source illustration kit by Vijay Verma](https://illlustrations.co/).
 
 
 ### TO DO
