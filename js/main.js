@@ -4,7 +4,7 @@
 let rules = {
     vaults:
         [   
-            {difficultyNum: 'Vault Number', lowerBound: 'was a Mimic', overshoot: 'activated the trap', enemy: 'Vault', doubles: 'trapdoor'},
+            {difficultyNum: 'Vault Number', lowerBound: 'was a Mimic', overshoot: 'activated the trap', enemy: 'Vault', push: 'trapdoor', lastRound: 4, title: 'Vaults'},
             {level: 1, 'vault-die': '1d8', 'player-die': '2d6', odds: 1, trap: 9, split: false},
             {level: 2, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: false},
             {level: 3, 'vault-die': '1d12', 'player-die': '2d6', odds: 3, trap: 21, split: false},
@@ -12,9 +12,9 @@ let rules = {
             {level: 5, 'vault-die': '1d20', 'player-die': '2d6+1d4', odds: 4, trap: 21, split: false},
             
         ],
-    pickpocket: [
-        {level: 1, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: true },
-        {difficultyNum: 'Pocket', lowerBound: 'Kicked You', overshoot: 'were cut by the sword', enemy: 'Mark', doubles: 'better mark'}
+    giantsAndHalflings: [
+        {difficultyNum: 'knee', lowerBound: 'Kicked You', overshoot: 'entered the maw', enemy: 'Giant', push: 'hit the knee', doubleOnes: `There's a snake in the grass! The giant runs away.`, lastRound: 1, title: 'Giants and Halflings'},
+        {level: 1, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: true }
     ]
 }
 /*****************************************/
@@ -27,7 +27,8 @@ let debounceTimeoutHandle;
 const sounds = {
     gameWin: 'resources/gameWin.mp3',
     roundWin: 'resources/roundWin.mp3',
-    gameLoss: 'resources/lose.wav'
+    gameLoss: 'resources/lose.wav',
+    push: 'resources/neutral1.flac'
 };
 const player = new Audio();
 
@@ -52,7 +53,7 @@ $(function(){
     //Event listeners
     /*****************************************/
     $flowBtn.on('click', function(){
-        gameState.gameOn ? initGame() : startGame();
+        gameState.gameOn ? initGame(gameState.game || 'vaults') : startGame();
     });
     $nextRndBtn.on('click', nextRound);
     $crowbarBtn.on('click', crowbarOption);
@@ -62,10 +63,9 @@ $(function(){
     /*****************************************/
     // Game Logic
     /*****************************************/
-    function initGame(){
-        console.log('init game called');
+    function initGame(game){
         gameState = {
-            game: 'vaults',
+            game: game,
             winner: 'null',
             roundWinner:'null',
             turn: -1,
@@ -74,19 +74,12 @@ $(function(){
             houseRoll: null,
             playerRoll: null,
             gameOn: false,
-            rolledDoubles: false,
+            rolledDoubleOnes: false,
             diceToRoll: '1d8',
-            demoMode: false,
+            demoMode: true,
             demoNum: -1
         }
-        $throwBtn.css('display', 'none');
-        $crowbarBtn.css('display', 'none');
-        $flowBtn.html('Start New Game');
-        $wagerInput.css('display', '');
-        $wagerInput.html('');
-        $wager.css('display', 'none');
-        $nextRndBtn.css('display', 'none');
-        $messageEl.html('Enter a wager and start the game!')
+        initRender();
     }
 
     function startGame(){
@@ -99,12 +92,12 @@ $(function(){
         roundStartRender();
         gameState.houseRoll = null;
         gameState.playerRoll = null;
-        gameState.rolledDoubles = false;
-        gameState.diceToRoll = rules.vaults[gameState.level]['vault-die'];
+        gameState.rolledDoubleOnes = false;
+        gameState.diceToRoll = rules[gameState.game][gameState.level]['vault-die'];
     }
     function playerSetup(){
         afterHouseRender();
-        gameState.diceToRoll = rules.vaults[gameState.level]['player-die'];
+        gameState.diceToRoll = rules[gameState.game][gameState.level]['player-die'];
     }
     
     function nextRound(){
@@ -119,9 +112,9 @@ $(function(){
         if (gameState.houseRoll === 1){
             houseWins();
         } else if (gameState.playerRoll) {
-            if (gameState.rolledDoubles) {
-                rolledDoubles();
-            } else if (gameState.playerRoll >= gameState.houseRoll && gameState.playerRoll < rules.vaults[gameState.level].trap){
+            if (gameState.rolledDoubleOnes||(gameState.houseRoll === gameState.playerRoll)) {
+                push();
+            } else if (gameState.playerRoll > gameState.houseRoll && gameState.playerRoll < rules[gameState.game][gameState.level].trap){
                 playerWinsRound();
             } else houseWins();
         } else playerSetup();
@@ -129,10 +122,10 @@ $(function(){
 
     function  houseWins(){
         if (gameState.houseRoll === 1) {
-            $messageEl.html(`The ${rules.vaults[0].enemy} ${rules.vaults[0].lowerBound}! You lose.`);
+            $messageEl.html(`The ${rules[gameState.game][0].enemy} ${rules[gameState.game][0].lowerBound}! You lose.`);
         } else if (gameState.houseRoll > gameState.playerRoll) {
-            $messageEl.html(`You only rolled a ${gameState.playerRoll}, the ${rules.vaults[0].difficultyNum} was ${gameState.houseRoll}. You lose.`);
-        } else $messageEl.html(`You rolled above the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll} and ${rules.vaults[0].overshoot}. You lose.`);
+            $messageEl.html(`You only rolled a ${gameState.playerRoll}, the ${rules[gameState.game][0].difficultyNum} was ${gameState.houseRoll}. You lose.`);
+        } else $messageEl.html(`You rolled above the ${rules[gameState.game][0].difficultyNum} of ${gameState.houseRoll} and ${rules[gameState.game][0].overshoot}. You lose.`);
         playSound('gameLoss');
         gameEndRender();
     }
@@ -140,20 +133,23 @@ $(function(){
         $throwBtn.css('display', 'none');
         $flowBtn.css('display', 'none');
         $vaultPic.attr('src', 'resources/vault-open.png');
-        gameState.wager=gameState.wager+gameState.wager*rules.vaults[gameState.level].odds;
+        gameState.wager=gameState.wager+gameState.wager*rules[gameState.game][gameState.level].odds;
         optionToContinue();
     }
-    function rolledDoubles(){
-        $messageEl.html(`You found the ${rules.vaults[0].doubles} by rolling doubles! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
+    function push(){
+        if (rules[gameState.game][0].rolledDoubleOnes){
+            $messageEl.html(`${rules[gameState.game][0].push} You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
+        } else $messageEl.html(`You found the ${rules[gameState.game][0].push}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
         if (gameState.level >3) {gameState.level = 3};
         $nextRndBtn.css('display', '');
     }
     function optionToContinue(){
-        if (gameState.level <=3) {
+        if (gameState.level < rules[gameState.game][0].lastRound) {
             playSound('roundWin');
-            $messageEl.html(`You won the round with a ${gameState.playerRoll}, which is higher than the ${rules.vaults[0].difficultyNum} of ${gameState.houseRoll}! Would you like to move on to the next vault?`);
-            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules.vaults[gameState.level+1].odds}:1`);
+            $messageEl.html(`You won the round with a ${gameState.playerRoll}, which is higher than the ${rules[gameState.game][0].difficultyNum} of ${gameState.houseRoll}! Would you like to move on to the next vault?`);
+            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules[gameState.game][gameState.level+1].odds}:1`);
             $nextRndBtn.css('display', '');
+            $flowBtn.css('display', '');
         } else {
             playSound('gameWin');
             $messageEl.html(`You won the game! Your initial wager has become ${gameState.wager}`);
@@ -173,26 +169,37 @@ $(function(){
     /*****************************************/
     /********* RENDER FUNCTIONS **********/
     /*****************************************/
-
+    function initRender(){
+        $throwBtn.css('display', 'none');
+        $crowbarBtn.css('display', 'none');
+        $flowBtn.html('Start New Game');
+        $wagerInput.css('display', '');
+        $wagerInput.html('');
+        $wager.css('display', 'none');
+        $nextRndBtn.css('display', 'none');
+        $messageEl.html('Enter a wager and start the game!')
+        $('h1').html(`D&Dice: ${rules[gameState.game][0].title}`)
+    }
     function gameStartRender(){
         $flowBtn.html('Reset');
         $wager.css('display', 'none')
         $wagerInput.css('display', 'none');
     }
     function roundStartRender(){
-        if (gameState.rolledDoubles) {
-            $messageEl.html(`You found the ${rules.vaults[0].doubles}! You do not win anything this round, but you automatically proceed to the next ${rules.vaults[0].enemy}`);
+        if (gameState.rolledDoubleOnes) {
+            playSound('push');
+            $messageEl.html(`You found the ${rules[gameState.game][0].push}! You do not win anything this round, but you automatically proceed to the next ${rules[gameState.game][0].enemy}`);
         } if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
             $messageEl.html('Round 4, with a crowbar!')
-            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round 4 with a crowbar are ${rules.vaults[gameState.level].odds}:1`);
+            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round 4 with a crowbar are ${rules[gameState.game][gameState.level].odds}:1`);
         } else {
             $messageEl.html(`Round ${gameState.level}!`);
-            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round ${gameState.level} are ${rules.vaults[gameState.level].odds}:1`);
+            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for Round ${gameState.level} are ${rules[gameState.game][gameState.level].odds}:1`);
         }
         if (gameState.level === 4) {
             //add button for crowbar option, which calls crowBarOption() when clicked
             $crowbarBtn.css('display', '');
-            $wager.html(`Your current wager is ${gameState.wager} gold! For the final round, you can roll an extra 1d4 and choose to reduce the odds from ${rules.vaults[gameState.level].odds}:1 to ${rules.vaults[gameState.level+1].odds}:1`);
+            $wager.html(`Your current wager is ${gameState.wager} gold! For the final round, you can roll an extra 1d4 and choose to reduce the odds from ${rules[gameState.game][gameState.level].odds}:1 to ${rules[gameState.game][gameState.level+1].odds}:1`);
         }
         $vaultPic.attr('src', 'resources/vault-closed.png');
         $wager.css('display', '');
@@ -206,10 +213,11 @@ $(function(){
         $flowBtn.css('display', 'none');
     }
     function afterHouseRender(){
-        const trapMessage = gameState.level <= 2 ? ` but beware the trap at ${rules.vaults[gameState.level].trap} and above!` : `.`;
+        const trapMessage = gameState.level <= 2 ? ` but beware the trap at ${rules[gameState.game][gameState.level].trap} and above!` : `.`;
         $messageEl.html(`The house rolled a ${gameState.houseRoll}. You will need to roll a ${gameState.houseRoll} or higher${trapMessage}`);   
         $throwBtn.css('display', '');
         $throwBtn.html(`<i class="las la-dice"></i>Roll!`);
+        $flowBtn.css('display', '');
     }
     function gameEndRender(){
         $flowBtn.css('display','');
@@ -217,9 +225,9 @@ $(function(){
         $throwBtn.css('display', 'none');
     }
     
-/*****************************************/
+/****************************************************/
 /*****   Functions related to the rules modal   *****/
-/*****************************************/
+/****************************************************/
     function gameRules(){
         $rulesModal.css('display', 'block');
     }
@@ -227,9 +235,9 @@ $(function(){
         $rulesModal.css('display', 'none');
     }
 
-/*****************************************/
+/************************************************************************************************/
 /*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html . It controls the dice and canvas  *****/
-/*****************************************/
+/************************************************************************************************/
     const canvas = $t.id('canvas');
 
     $t.dice.use_true_random = false;
@@ -245,7 +253,7 @@ $(function(){
         // do here rpc call or whatever to get your own result of throw.
         // then callback with array of your result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        demoArr = [[4], [2, 3], [8], [3, 6], [12], [6,6], [10], [5, 6]];
+        demoArr = [[4], [2, 3], [8], [1,1], [11], [6,5], [13], [5, 6]];
         if (gameState.demoMode){
             gameState.demoNum++;
             callback(demoArr[gameState.demoNum]);
@@ -254,13 +262,12 @@ $(function(){
     }
 
     function notation_getter() {
-        console.log(gameState.diceToRoll);
         return $t.dice.parse_notation(gameState.diceToRoll);
     }
 
     function after_roll(notation, result) {
         if (gameState.turn === 1) {
-            gameState.rolledDoubles =  result[0] === result[1] ? true : false;
+            gameState.rolledDoubleOnes =  (result[0] === result[1]) && (result[0] === 1) ? true : false;
             gameState.playerRoll = result.reduce(function(s, a) { return s + a; });
         } else gameState.houseRoll = result.reduce(function(s, a) { return s + a; });
         endTurn();
@@ -286,6 +293,6 @@ $(function(){
         box.reinit(canvas, {w: $canvasBoxEl.innerWidth(), h: $canvasBoxEl.innerHeight()});        
     }
     //initializing the code
-    initGame();
+    initGame('vaults');
     box.bind_throw($t.id('throw'), notation_getter, before_roll, after_roll);
 })

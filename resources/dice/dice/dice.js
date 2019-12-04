@@ -293,7 +293,7 @@
     this.scale = 100;
 
     this.create_d4 = function() {
-        this.scale = 70;
+        this.scale = 60;
         if (!this.d4_geometry) this.d4_geometry = this.create_d4_geometry(this.scale * 1.2);
         if (!this.d4_material) this.d4_material = new THREE.MeshFaceMaterial(
                 this.create_d4_materials(this.scale / 2, this.scale * 2, d4_labels[0]));
