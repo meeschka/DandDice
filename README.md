@@ -1,6 +1,6 @@
 # DandDice
 ### Bringing Faerun's Most Beloved Dice Games to Your Browser
-Dungeons and dragons dice game for GA Project #1. The game currently only allows for Vaults, but Pickpocket and Giants & Halflings are next on the list.
+Dungeons and dragons dice game for GA Project #1. The game currently only allows for Vaults and Giants and Halflings, but Pickpocket is next on the list.
 
 ### Getting Started
 You can find Vaults [here](https://meeschka.github.io/DandDice/). 
@@ -24,14 +24,18 @@ Vault 4 + crowbar  |    1d20   | 2d6 + 1d4  |   4:1  |   no trap
 
 A player can choose to walk away after completing any vault. All winnings from the game are automatically wagered at the next vault if the player decides to continue.
 
+If the rules seem complicated, don't worry! The game will prompt you with the next steps and the win conditions in the message section.
+
 #### Variants
- Giants and halflings is a little like a single round of vaults where the number to beat is rolled on 1d10, and there is the option to split if the knee (vault number) is met exactly or push if you roll two 1s. When splitting, the initial wager is doubled, and the player rolls one additional die for each die rolled originally.
+ Giants and halflings is a little like a single round of vaults where the number to beat is rolled on 1d10, and there is the option to split if the knee (vault number) is met exactly or push if you roll two 1s. When splitting, the initial wager is doubled, and the player rolls one additional die for each die rolled originally. Currently, the game does not allow recursive splitting.
 
 Pickpocket has the same rules as G&H, except you don't exceed the knee to win. The knee pays 5-1, adjacent numbers 1:1, and two away pushes. 11 and 12 lose. For example on a purse of four, 3 and 5 pay 1-1. 2 and 6 push. 11-12 is "the watch," 1 is "the sap", and the ärgert number is "the purse". Variant rules can be found [in this discussion](https://www.reddit.com/r/TheCTeam/comments/6lkeij/giants_and_halflings/).
 
 ### Screenshots
+![image](resources/gameplay-screenshot.png)
 
 ### Technologies Used
+This game uses HTML, CSS, Javascript and Jquery for the main game logic. The 3D Dice Roller was modified from Anton Natarov's [free dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.html), and uses the Three JS library for 3D graphics and Cannon JS as a physics engine.
 
 ### Credits
 Vaults and it's associated variants were created by Jerry Holkins of Penny Arcade. Additional variants and specific ruleset were based on [this subreddit discussion](https://www.reddit.com/r/TheCTeam/comments/7ia630/giants_and_halflings_pickpocket_and_vaults/).
@@ -40,6 +44,7 @@ Vault graphics are from the [open source illustration kit by Vijay Verma](https:
 
 
 ### TO DO
-* refactor to better adhere to GA requirements
-* redo README to get all required sections
-* add option to switch between vaults and pickpocket or giants and halflings
+* add option to play pickpocket
+* make game responsive for phone-sized devices
+* allow players to split multiple times in Giants and Halflings
+* Find alternate images for Giants and Halflings, Pickpocket, Mimics

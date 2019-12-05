@@ -81,7 +81,7 @@ $(function(){
             gameOn: false,
             rolledDoubleOnes: false,
             diceToRoll: '1d8',
-            demoMode: true,
+            demoMode: false,
             demoNum: -1,
             splitNums: [],
             splitWager: 0
@@ -120,7 +120,6 @@ $(function(){
         checkWinner();
     }
     function checkWinner(){
-        console.log('check winner')
         //check the different win conditions
         if (gameState.houseRoll === 1){
             houseWins();
@@ -176,12 +175,10 @@ $(function(){
         if (gameState.level < rules[gameState.game][0].lastRound) {
             playSound('roundWin');
             $messageEl.html(`You won the round with a ${gameState.playerRoll}, which is higher than the ${rules[gameState.game][0].difficultyNum} of ${gameState.houseRoll}! Would you like to move on to the next vault?`);
-            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules[gameState.game][gameState.level+1].odds}:1`);
+            $wager.html(`Your current wager is ${gameState.wager} gold! The odds for the next round are ${rules[gameState.game][gameState.level+1].odds}:1.`);
             $nextRndBtn.css('display', '');
             $flowBtn.css('display', '');
-        } else if (gameState.splitNums){
-
-        } {
+        } else if (gameState.splitNums.length === 0){
             playSound('gameWin');
             $messageEl.html(`You won the game! Your initial wager has become ${gameState.wager}`);
             gameEndRender();
@@ -191,7 +188,7 @@ $(function(){
         //like a regular round, but you use one of the numbers in the splitNum array and only roll one die. Repeat until no more numbers in splitNum
         playSound('push');
         if(gameState.splitNums.length>1) {
-            $messageEl.html(`You have split, and have the option of completing another round with each of the dice you have just rolled. Next up is the ${gameState.splitNums[0]}`);
+            $messageEl.html(`You have split, and have the option of completing another round with each of the dice you have just rolled. Next up is the ${gameState.splitNums[0]}.`);
             $flowBtn.css('display', '');
         } else if (gameState.playerRoll >= gameState.houseRoll){
             gameState.splitWager = gameState.wager+gameState.wager*rules[gameState.game][gameState.level].odds;
@@ -212,7 +209,11 @@ $(function(){
     }
     function playSound(name) {
         player.src = sounds[name];
-        player.play();
+        var playerPromise = player.play();
+        if (playerPromise !== undefined) {
+            playerPromise.then()
+            .catch(err => console.log(err));
+        }
       }
     /*****************************************/
     /********* RENDER FUNCTIONS **********/
@@ -223,7 +224,7 @@ $(function(){
         $crowbarBtn.css('display', 'none');
         $flowBtn.html('Start New Game');
         $wagerInput.css('display', '');
-        $wagerInput.html('');
+        $wagerInput.val('');
         $wager.css('display', 'none');
         $nextRndBtn.css('display', 'none');
         $messageEl.html('Enter a wager and start the game!')
@@ -239,16 +240,16 @@ $(function(){
     }
     function gameStartRender(){
         $flowBtn.html('Reset');
-        $wager.css('display', 'none')
         $wagerInput.css('display', 'none');
         $vaultsBtn.css('display', 'none');
         $gAndHBtn.css('display', 'none');
+        $messageEl.html('The house rolls first to determine the number to beat.');
     }
     function roundStartRender(){
         if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
             $messageEl.html('Round 4, with a crowbar!')
             $wager.html(`Your current wager is ${gameState.wager} gold. The odds for Round 4 with a crowbar are ${rules[gameState.game][gameState.level].odds}:1.`);
-        } else if (gameState.splitNums){
+        } else if (gameState.splitNums.length>0){
             //use message generated in splitNums
         } else {
             $messageEl.html(`Round ${gameState.level}`);
@@ -324,7 +325,7 @@ $(function(){
 
         // to set dice results, callback with array of your desired result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        demoArr = [[4], [3, 1], [3], [1,1], [11], [6,5], [13], [5, 6]];
+        demoArr = [[4], [3, 1], [4], [2,5], [6], [6,2], [13], [5, 6]];
         if (gameState.demoMode){
             gameState.demoNum++;
             callback(demoArr[gameState.demoNum]);
@@ -375,6 +376,6 @@ $(function(){
         box.reinit(canvas, {w: $canvasBoxEl.innerWidth(), h: $canvasBoxEl.innerHeight()});        
     }
     //initializing the code
-    initGame('giantsAndHalflings');
+    initGame('vaults');
     box.bind_throw($t.id('throw'), notation_getter, before_roll, after_roll);
 })
