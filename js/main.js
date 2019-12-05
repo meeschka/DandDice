@@ -49,6 +49,8 @@ $(function(){
     const $rulesModal = $('#rules-modal');
     const $closeModal = $('.close');
     const $canvasBoxEl = $('#canvas');
+    const $vaultsBtn = $('#vaults-btn');
+    const $gAndHBtn = $('#gAndH-btn');
     
     /*****************************************/
     //Event listeners
@@ -61,6 +63,8 @@ $(function(){
     $rulesBtn.on('click', gameRules);
     $closeModal.on('click', closeRules);
     addEventListener('resize', debouncedResize);
+    $vaultsBtn.on('click', playVaults);
+    $gAndHBtn.on('click', playGAndH);
     /*****************************************/
     // Game Logic
     /*****************************************/
@@ -224,11 +228,21 @@ $(function(){
         $nextRndBtn.css('display', 'none');
         $messageEl.html('Enter a wager and start the game!')
         $('h1').html(`D&Dice: ${rules[gameState.game][0].title}`)
+        if (gameState.game === 'vaults') {
+            $vaultsBtn.css('display', 'none');
+            $gAndHBtn.css('display', '');
+        } else {
+            $gAndHBtn.css('display', 'none');
+            $vaultsBtn.css('display', '');
+        }
+
     }
     function gameStartRender(){
         $flowBtn.html('Reset');
         $wager.css('display', 'none')
         $wagerInput.css('display', 'none');
+        $vaultsBtn.css('display', 'none');
+        $gAndHBtn.css('display', 'none');
     }
     function roundStartRender(){
         if (gameState.level === 5) { //there is technically no round 5, only round 4 with a crowbar, so need to manually program this message
@@ -272,7 +286,15 @@ $(function(){
         $wager.css('display', 'none');
         $throwBtn.css('display', 'none');
     }
-    
+/****************************************************/
+/*****   Functions related to switching games   *****/
+/****************************************************/   
+    function playVaults(){
+        initGame('vaults');
+    }
+    function playGAndH(){
+        initGame('giantsAndHalflings');
+    }
 /****************************************************/
 /*****   Functions related to the rules modal   *****/
 /****************************************************/
