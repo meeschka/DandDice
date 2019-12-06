@@ -3,7 +3,7 @@
 Dungeons and dragons dice game for GA Project #1. The game currently only allows for Vaults and Giants and Halflings, but Pickpocket is next on the list.
 
 ### Getting Started
-You can find Vaults [here](https://meeschka.github.io/DandDice/). 
+You can find Vaults [here](https://meeschka.github.io/DandDice/). To host the game locally, clone the repo and open index.html in your browser.
 
 ### Rules of Play - Vaults
 After the player makes their wager, the house roles the first die, an eight-sided die (d8). This is the difficulty of the vault. If the house rolls a 1, the vault is a mimic and the player loses immediately.
@@ -27,7 +27,7 @@ A player can choose to walk away after completing any vault. All winnings from t
 If the rules seem complicated, don't worry! The game will prompt you with the next steps and the win conditions in the message section.
 
 #### Variants
- Giants and halflings is a little like a single round of vaults where the number to beat is rolled on 1d10, and there is the option to split if the knee (vault number) is met exactly or push if you roll two 1s. When splitting, the initial wager is doubled, and the player rolls one additional die for each die rolled originally. Currently, the game does not allow recursive splitting.
+Giants and halflings is a little like a single round of vaults where the number to beat is rolled on 1d10, and there is the option to split if the knee (vault number) is met exactly or push if you roll two 1s. When splitting, the initial wager is doubled, and the player rolls one additional die for each die rolled originally. Currently, the game does not allow recursive splitting.
 
 Pickpocket has the same rules as G&H, except you don't exceed the knee to win. The knee pays 5-1, adjacent numbers 1:1, and two away pushes. 11 and 12 lose. For example on a purse of four, 3 and 5 pay 1-1. 2 and 6 push. 11-12 is "the watch," 1 is "the sap", and the ärgert number is "the purse". Variant rules can be found [in this discussion](https://www.reddit.com/r/TheCTeam/comments/6lkeij/giants_and_halflings/).
 

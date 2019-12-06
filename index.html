@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>D&Dice</title>
-    <link rel='stylesheet' type='text/css' href='css/main.css'>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
@@ -14,32 +14,32 @@
     <header>
         <h1>D&Dice: Vaults</h1>
     </header>
-    <div class='container-col'>
-        <div class='control-panel'>
-            <div class='message-group'>
-                <div class='message'></div>
-                <p id='wager-message'></p>
+    <div class="container-col">
+        <div class="control-panel">
+            <div class="message-group">
+                <div class="message"></div>
+                <p id="wager-message"></p>
             </div>
-            <input type='text' class='wager' placeholder='Your wager'/>
-            <div class='btn-row'>
-                <button id='crowbar-btn'><i class="las la-toolbox"></i>Take a Crowbar!</button>
-                <button id='throw'></button>
-                <button id='next-rnd'>Play the Next Round!</button>
-                <button id='flow-btn'>Reset Game</button>
-                <button id='rules-btn'>Rules</button>
-                <button id='vaults-btn'>Play Vaults</button>
-                <button id='gAndH-btn'>Play Giants and Halflings</button>
+            <input type="text" class="wager" placeholder="Your wager"/>
+            <div class="btn-row">
+                <button id="crowbar-btn"><i class="las la-toolbox"></i>Take a Crowbar!</button>
+                <button id="throw"></button>
+                <button id="next-rnd">Play the Next Round!</button>
+                <button id="flow-btn">Reset Game</button>
+                <button id="rules-btn">Rules</button>
+                <button id="vaults-btn">Play Vaults</button>
+                <button id="gAndH-btn">Play Giants and Halflings</button>
             </div>
         </div>
-        <div class='container-row'>
-                <div class='dice' id='canvas'></div>
-                <div class='vault-pic'>
+        <div class="container-row">
+                <div class="dice" id="canvas"></div>
+                <div class="vault-pic">
                     <img src="resources/vault-closed.png" alt="Vault">
                 </div>
         </div>
-        <div class='modal' id='rules-modal'>
-            <div class='modal-content'>
-                <span class='close'>&times;</span>
+        <div class="modal" id="rules-modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
                 <h3>Vaults</h3>
                 <p>
                     After the player makes their wager, the house roles the first die, an eight-sided die (d8). 

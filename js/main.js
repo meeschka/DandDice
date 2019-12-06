@@ -208,7 +208,7 @@ $(function(){
             playerPromise.then()
             .catch(err => console.log(err));
         }
-      }
+    }
     /*****************************************/
     /********* RENDER FUNCTIONS **********/
     /*****************************************/
@@ -230,7 +230,6 @@ $(function(){
             $gAndHBtn.css('display', 'none');
             $vaultsBtn.css('display', '');
         }
-
     }
     function gameStartRender(){
         $flowBtn.html('Reset');
@@ -299,23 +298,22 @@ $(function(){
     function closeRules(){
         $rulesModal.css('display', 'none');
     }
-/************************************************************************************************/
-/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html . It controls the dice and canvas  *****/
-/************************************************************************************************/
+/************************************************************************************************************************************/
+/*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html . It controls the dice and canvas. It has been kept separate for clarity  *****/
+/************************************************************************************************************************************/
+    //these variables were kept separate to avoid breaking up the dice functionality
     const canvas = $t.id('canvas');
-
     $t.dice.use_true_random = false;
     var params = {};
-
     //make new canvas element, assign dice and dice box classes
     var box = new $t.dice.dice_box(canvas);
     box.animate_selector = false;
 
+    //dice functions
     function before_roll(vectors, notation, callback) {
         //function called before the dice are rolled but after the throw button is clicked
         // change styles to reflect that rolling is happening
         beforeRollRender();
-
         // to set dice results, callback with array of your desired result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
         demoArr = [[4], [3, 1], [6], [2,6], [9], [6,4], [13], [5, 6]];
