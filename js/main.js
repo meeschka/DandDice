@@ -5,11 +5,11 @@ let rules = {
     vaults:
         [   
             {difficultyNum: 'Vault Number', lowerBound: 'was a Mimic', overshoot: 'activated the trap', overshootNoun: 'trap', enemy: 'Vault', push: 'found the trapdoor', lastRound: 4, title: 'Vaults'},
-            {level: 1, 'vault-die': '1d8', 'player-die': '2d6', odds: 1, trap: 9, split: false},
-            {level: 2, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11, split: false},
-            {level: 3, 'vault-die': '1d12', 'player-die': '2d6', odds: 3, trap: 21, split: false},
-            {level: 4, 'vault-die': '1d20', 'player-die': '2d6', odds: 5, trap: 21, split: false},
-            {level: 5, 'vault-die': '1d20', 'player-die': '2d6+1d4', odds: 4, trap: 21, split: false},
+            {level: 1, 'vault-die': '1d8', 'player-die': '2d6', odds: 1, trap: 9},
+            {level: 2, 'vault-die': '1d10', 'player-die': '2d6', odds: 2, trap: 11},
+            {level: 3, 'vault-die': '1d12', 'player-die': '2d6', odds: 3, trap: 21},
+            {level: 4, 'vault-die': '1d20', 'player-die': '2d6', odds: 5, trap: 21},
+            {level: 5, 'vault-die': '1d20', 'player-die': '2d6+1d4', odds: 4, trap: 21},
             
         ],
     giantsAndHalflings: [
@@ -71,8 +71,6 @@ $(function(){
     function initGame(game){
         gameState = {
             game: game,
-            winner: 'null',
-            roundWinner:'null',
             turn: -1,
             level: 1,
             wager: 0,
