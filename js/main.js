@@ -1,4 +1,3 @@
-
 //store the rules for each level in an object, as array values, in the following format for each vault:
 // {level: int, 'vault-die': str, 'player-die': str, odds: val, trap: int, terms: {difficulty: str, lower-bound: str, overshoot: str, split: bool}}
 let rules = {
@@ -79,14 +78,13 @@ $(function(){
             gameOn: false,
             rolledDoubleOnes: false,
             diceToRoll: '1d8',
-            demoMode: false,
+            demoMode: true,
             demoNum: -1,
             splitNums: [],
             splitWager: 0
         }
         initRender();
     }
-
     function startGame(){
         //sets up game board, enters player's wager into gamestate
         gameState.gameOn = true;
@@ -131,7 +129,6 @@ $(function(){
             } else houseWins();
         } else playerSetup();
     }
-
     function  houseWins(){
         //if the house wins any round, they win the game
         //the message displayed to the player states how they lost the game for clarity
@@ -166,7 +163,6 @@ $(function(){
             gameState.level = rules[gameState.game][0].lastRound-1;
         }
         $nextRndBtn.css('display', '');
-
     }
     function optionToContinue(){
         //after each round either you have the option to continue or you've won the game
@@ -303,7 +299,6 @@ $(function(){
     function closeRules(){
         $rulesModal.css('display', 'none');
     }
-
 /************************************************************************************************/
 /*****   THIS CODE IS MODIFIED FROM NATAROV, http://www.teall.info/2014/01/online-3d-dice-roller.html . It controls the dice and canvas  *****/
 /************************************************************************************************/
@@ -323,18 +318,16 @@ $(function(){
 
         // to set dice results, callback with array of your desired result, example:
         // callback([2, 2, 2, 2]); // for 4d6 where all dice values are 2.
-        demoArr = [[4], [3, 1], [4], [2,5], [6], [6,2], [13], [5, 6]];
+        demoArr = [[4], [3, 1], [6], [2,6], [9], [6,4], [13], [5, 6]];
         if (gameState.demoMode){
             gameState.demoNum++;
             callback(demoArr[gameState.demoNum]);
         } else callback();
     }
-
     function notation_getter() {
         //parses string dice notation (i.e., 2d6) into appropriate input for geometry generator
         return $t.dice.parse_notation(gameState.diceToRoll);
     }
-
     function after_roll(notation, result) {
         //called once roll is complete
         if (gameState.turn === 1) {
@@ -353,7 +346,6 @@ $(function(){
         } else gameState.houseRoll = result.reduce(function(s, a) { return s + a; });
         endTurn();
     }
-    
     if (params.notation) {
         set.value = params.notation;
     }
@@ -363,7 +355,6 @@ $(function(){
     else {
         //what should be rendered during canvas setup, if anything
     }
-
     //making canvas responsive
     function debouncedResize(){
         clearTimeout(debounceTimeoutHandle); //clears pending debounce events

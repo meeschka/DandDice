@@ -72,7 +72,6 @@ h1 {
     flex-grow: 1;
     min-width: 0;
 }
-
 .message-group > * {
     font-size: 1.2em;
     padding: 0.5em;
@@ -93,7 +92,6 @@ h1 {
     border: 1px solid rgb(33, 38, 79);
     background-color: rgb(210, 236, 248);
 }
-
 .modal-content{
     margin: 10% auto;
     padding: 10px 20px;
