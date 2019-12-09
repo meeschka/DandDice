@@ -78,7 +78,7 @@ $(function(){
             gameOn: false,
             rolledDoubleOnes: false,
             diceToRoll: '1d8',
-            demoMode: true,
+            demoMode: false,
             demoNum: -1,
             splitNums: [],
             splitWager: 0
